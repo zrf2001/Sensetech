@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.Text2Mapper">
+    
+    <resultMap type="Text2" id="Text2Result">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="sex"    column="sex"    />
+        <result property="address"    column="address"    />
+    </resultMap>
+
+    <sql id="selectText2Vo">
+        select id, name, sex, address from text2
+    </sql>
+
+    <select id="selectText2List" parameterType="Text2" resultMap="Text2Result">
+        <include refid="selectText2Vo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+        </where>
+    </select>
+    
+    <select id="selectText2ById" parameterType="Long" resultMap="Text2Result">
+        <include refid="selectText2Vo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertText2" parameterType="Text2">
+        insert into text2
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="sex != null">sex,</if>
+            <if test="address != null">address,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="address != null">#{address},</if>
+         </trim>
+    </insert>
+
+    <update id="updateText2" parameterType="Text2">
+        update text2
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="address != null">address = #{address},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteText2ById" parameterType="Long">
+        delete from text2 where id = #{id}
+    </delete>
+
+    <delete id="deleteText2ByIds" parameterType="String">
+        delete from text2 where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
